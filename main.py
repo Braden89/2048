@@ -3,16 +3,28 @@ from board import *
 
 def startup():
     board = Board()
-    board.addRandomValue()
-    print(board)
-    print()
-    board.addRandomValue()
-    print(board)
-    print()
-    board.addRandomValue()
+    board.setValue(0, 0, 2)
+    board.setValue(1, 0, 2)
+    
+    board.setValue(1, 0, 4)
+    board.setValue(1, 1, 2)
+    board.setValue(1, 2, 4)
+    board.setValue(1, 3, 4)
+
+    board.setValue(2, 0, 4)
+    board.setValue(2, 2, 4)
+
+    board.setValue(3, 3, 4)
+
+
+    
     print(board)
     print()
     board.moveUp()
+
+    print(board)
+    print()
+    board.moveLeft()
     print(board)
     return board
 
@@ -50,7 +62,7 @@ def main():
     '''
         
 
-    pygame.quit()
+    # pygame.quit()
     return
 
 if __name__ == "__main__":

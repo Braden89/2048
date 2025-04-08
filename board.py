@@ -16,19 +16,28 @@ class Board:
         return "\n".join (lines)
     
 
-    def setValue(self, collum, row, val):
+    def setValue(self, row, collumn, val):
         '''
         Sets value at given posisition to val. 
         if val or position is not valid, return -1, else, return 0
         '''
 
         # check if in bounds
-        if collum >= self.mWidth or row >= self.mHeight:
-            return -1
+        # if collumn >= self.mWidth or row >= self.mHeight:
+        #    print("setValue: Not within bounds")
+        #    return -1
+        # check if valid num using bitwise method.
+        # binary_val = bin(val)
+        # if (binary_val and (binary_val - 1) != 0) or (binary_val and binary_val - 1 != 0):
+        #    print("setValue: Not a valid value")
+        #    return -1
+        self.mBoard[row][collumn] = val
+        return 0
         
-        # check if valid num (to be added)
+        
 
         
+
 
 
 
@@ -61,48 +70,118 @@ class Board:
         '''
 
         changed = False
-        for collums in range(self.mWidth):
-            collum = []
-            has_num = False     # if has all 0, no need to do rest of collum
+        for collumns in range(self.mWidth):
+            collumn = []
+            has_num = False     # if has all 0, no need to do rest of collumn
             for rows in range(self.mHeight):
-                # get all values for collum
-                collum.append(self.mBoard[rows][collums])
-                if self.mBoard[rows][collums] != 0:
+                # get all values for collumn
+                collumn.append(self.mBoard[rows][collumns])
+                if collumn[-1] != 0:
                     has_num = True
 
-            # if it only found 0's, break
+            # if it only found 0's, go to next
             if has_num == False:
                 continue
             else: 
                 pivot = 0
                 last_num = 0
-                # loop through the collum list and move any needed
-                for i in range(len(collum)):
+                # loop through the collumn list and move any needed
+                for i in range(len(collumn)):
 
                     # if number is 0 or if is the first number in the row, skip
-                    if collum[i] == 0 or i == 0:
-                        # incase first number isnt 0, mark what is is
-                        last_num = collum[i]
+                    if collumn[i] == 0 or i == 0:
+                
+                        #if first number not 0, increase pivot
+                        if collumn[i] != 0:
+                            pivot += 1
+                            last_num = collumn[i]
                         continue
 
                     # if it is not zero, but does not match the last number
-                    elif collum[i] != last_num:
-                        self.mBoard[pivot][collums] = collum[i]
+                    elif collumn[i] != last_num:
+                        self.mBoard[pivot][collumns] = collumn[i]
+                        self.mBoard[i][collumns] = 0
+                        last_num = collumn[i]
                         pivot += 1
-                        self.mBoard[i][collums] = 0
                         changed == True
 
 
                     # if not zero and matches last number, meaning it needs to combine
                     else:
-                        # multiply last number by itself
-                        self.mBoard[pivot - 1][collums] = last_num * 2
+                        # multiply last number by 2
+                        self.mBoard[pivot - 1][collumns] = last_num * 2
 
                         # set last_num to 0 to prevent matching multiple
                         last_num = 0
-                        self.mBoard[i][collums] = 0
+                        self.mBoard[i][collumns] = 0
+                        changed == True
+        return changed
+
+    def moveLeft(self):
+        '''
+        method for moving tiles Left
+        returns 0 if change happened, -1 if no change
+        '''
+
+        changed = False
+        for rows in range(self.mHeight):
+            row = []
+            has_num = False
+
+            # get all values from row
+            for collumns in range(self.mWidth):
+                row.append(self.mBoard[rows][collumns])
+                if row[-1] != 0:
+                    has_num = True
+
+            #if it only found 0's, go to next
+            if has_num == False:
+                continue
+            else:
+                pivot = 0
+                last_num = 0
+                # loop through the collumn list and ove any needed
+                for i in range(len(row)):
+
+                    # if number is 0 or is the first number in the row, skip
+                    if row[i] == 0 or i == 0:
+                        # if furst number not 0, increase pivot
+                        if row[i] != 0:
+                            pivot += 1
+                            last_num = row[i]
+                        continue
+
+                    # if it is not zero, but does not match the last number
+                    elif row[i] != last_num:
+                        self.mBoard[rows][pivot] = row[i]
+                        self.mBoard[rows][i] = 0
+                        last_num = row[i]
+                        pivot += 1
                         changed == True
 
+                    # if not zero and matches last number, meaning it needs to combine
+                    else:
+                        # multiply number by 2
+                        self.mBoard[rows][pivot - 1] = last_num * 2
+
+                        #set last_num to 0 to prevent matching multiple
+                        last_num = 0
+                        self.mBoard[rows][i] = 0
+                        changed == True
+        return changed
+
+
+    def moveDown(self):
+        '''
+        method for moving tiles down. returns True if changed, False if no change
+        '''
+        changed = False
+        for collumns in range(self.mWidth):
+            collumn = []
+            has_num = False
+            for rows in range(self.mHeight):
+                # get all values for collumn
+                collumn.append(self.mBoard[self.mHeight - rows - 1][collumns])
 
 
 

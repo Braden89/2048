@@ -20,7 +20,7 @@ def startup():
     
     print(board)
     print()
-    board.moveUp()
+    board.moveDown()
 
     print(board)
     print()

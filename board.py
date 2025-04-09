@@ -71,12 +71,12 @@ class Board:
 
         changed = False
         for collumns in range(self.mWidth):
-            collumn = []
+            col = []
             has_num = False     # if has all 0, no need to do rest of collumn
             for rows in range(self.mHeight):
                 # get all values for collumn
-                collumn.append(self.mBoard[rows][collumns])
-                if self.mBoard[rows][collumns] != 0:
+                col.append(self.mBoard[rows][collumns])
+                if col[rows] != 0:
                     has_num = True
 
             # if it only found 0's, go to next
@@ -86,24 +86,29 @@ class Board:
                 pivot = 0
                 last_num = 0
                 # loop through the collumn list and move any needed
-                for i in range(len(collumn)):
+                for i in range(len(col)):
 
                     # if number is 0 or if is the first number in the row, skip
-                    if collumn[i] == 0 or i == 0:
+                    if col[i] == 0 or i == 0:
                 
                         #if first number not 0, increase pivot
-                        if collumn[i] != 0:
+                        if col[i] != 0:
                             pivot += 1
-                            last_num = collumn[i]
+                            last_num = col[i]
                         continue
 
                     # if it is not zero, but does not match the last number
-                    elif collumn[i] != last_num:
-                        self.mBoard[pivot][collumns] = collumn[i]
-                        self.mBoard[i][collumns] = 0
-                        last_num = collumn[i]
-                        pivot += 1
-                        changed = True
+                    elif col[i] != last_num:
+                        if i == pivot:
+                            last_num = col[i]
+                            pivot += 1
+
+                        else:
+                            self.mBoard[pivot][collumns] = col[i]
+                            self.mBoard[i][collumns] = 0
+                            last_num = col[i]
+                            pivot += 1
+                            changed = True
 
 
                     # if not zero and matches last number, meaning it needs to combine
@@ -131,7 +136,7 @@ class Board:
             # get all values from row
             for collumns in range(self.mWidth):
                 row.append(self.mBoard[rows][collumns])
-                if row[-1] != 0:
+                if row[collumns] != 0:
                     has_num = True
 
             #if it only found 0's, go to next
@@ -149,15 +154,21 @@ class Board:
                         if row[i] != 0:
                             pivot += 1
                             last_num = row[i]
-                        continue
+                        
 
                     # if it is not zero, but does not match the last number
                     elif row[i] != last_num:
-                        self.mBoard[rows][pivot] = row[i]
-                        self.mBoard[rows][i] = 0
-                        last_num = row[i]
-                        pivot += 1
-                        changed == True
+                        if i == pivot:
+                            last_num = row[i]
+                            pivot += 1
+
+                        
+                        else:
+                            self.mBoard[rows][pivot] = row[i]
+                            self.mBoard[rows][i] = 0
+                            last_num = row[i]
+                            pivot += 1
+                            changed == True
 
                     # if not zero and matches last number, meaning it needs to combine
                     else:
@@ -177,57 +188,63 @@ class Board:
         '''
         changed = False
         for collumns in range(self.mWidth):
-            collumn = []
+            col = []
             has_num = False
             for rows in range(self.mHeight):
                 # get all values for collumn
-                row_offset = self.mHeight - rows - 1
-                collumn.append(self.mBoard[row_offset][collumns])
-                if self.mBoard[row_offset][collumns] != 0:
+                col.append(self.mBoard[rows][collumns])
+                if self.mBoard[rows][collumns] != 0:
                     has_num = True
 
-                #if only found 0's, skip to next
-                if has_num == False:
-                    continue
-                else:
-                    pivot = self.mHeight - 1
-                    offset = self.mHeight
-                    last_num = 0
-                    collumn.reverse()   #inverse collumn list to be in correct order for i
+            #if only found 0's, skip to next
+            if has_num == False:
+                continue
+            else:
+                pivot = self.mHeight - 1
+                last_num = 0
+                col.reverse()
 
-                    # loop through the collumn list and move any if needed
-                    for i in range(len(collumn)):
-                        offset -= 1
+                # loop through the collumn list and move any if needed
+                for i in range(len(col)):
+                    offset = self.mHeight - i - 1
+                    
                         
-                        # if first number is 0 or if it is the first number in the collumn, skip
-                        if collumn[i] == 0 or i == 0:
+                    # if first number is 0 or if it is the first number in the collumn, skip
+                    if col[i] == 0 or i == 0:
 
-                            # if number is not 0, decrease pivot
-                            if collumn[i] != 0:
-                                pivot -= 1
-                                last_num = collumn[i]
-                            continue
+                        # if number is not 0, decrease pivot
+                        if col[i] != 0:
+                            pivot -= 1
+                            last_num = col[i]
+                        continue
 
-                        # if it is not zero, but does not match the last number
-                        elif collumn[i] != last_num:
-                            self.mBoard[pivot][collumns] = collumn[i]
+                    # if it is not zero, but does not match the last number
+                    elif col[i] != last_num:
+                        if offset == pivot:
+                            last_num = col[i]
+                            pivot -= 1
+
+                        else:
+                            self.mBoard[pivot][collumns] = col[i]
                             self.mBoard[offset][collumns] = 0
-                            last_num = collumn[i]
+                            last_num = col[i]
                             pivot -= 1
                             changed = True
 
-                        # if not zero and matches last number, meaning it needs to combine
-                        else:
-                            # multiply last number by 2
-                            self.mBoard[pivot + 1][collumns] = last_num * 2
+                    # if not zero and matches last number, meaning it needs to combine
+                    else:
+                        # multiply last number by 2
+                        self.mBoard[pivot + 1][collumns] = last_num * 2
 
-                            # set last_num to 0 to prevent matching multiple
-                            last_num = 0
-                            self.mBoard[offset][collumns] = 0
-                            changed = True
+                        # set last_num to 0 to prevent matching multiple
+                        last_num = 0
+                        self.mBoard[offset][collumns] = 0
+                        changed = True
 
         return changed
 
+
+    #def moveRight(self):
 
 
                         

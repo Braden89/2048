@@ -1,68 +1,78 @@
 import pygame
 from board import *
 
+
+
 def startup():
     board = Board()
-    board.setValue(0, 0, 2)
-    board.setValue(1, 0, 2)
-    
-    board.setValue(1, 0, 4)
-    board.setValue(1, 1, 2)
-    board.setValue(1, 2, 4)
-    board.setValue(1, 3, 4)
-
-    board.setValue(2, 0, 4)
-    board.setValue(2, 2, 4)
-
-    board.setValue(3, 3, 4)
-
-
-    
+    board.addRandomValue()
     print(board)
     print()
-    board.moveDown()
-
-    print(board)
-    print()
-    board.moveLeft()
-    print(board)
     return board
 
-
-def render(items):
+def createBackground():
     pass
+
+
+def render(board):
+    pass
+
+
+
     
 def main():
     # pygame setup
-    # pygame.init()
-    # screen = pygame.display.set_mode((1280, 720))
-    # clock = pygame.time.Clock()
+    pygame.init()
+    screen = pygame.display.set_mode((1280, 720))
+    clock = pygame.time.Clock()
     running = True
+    change = False
+
     board = startup()
 
-
-    '''
     while running:
         # poll for events
         # pygame.QUIT event means the user clicked X to close your window
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_w:
+                    change = board.moveUp()
+                    if change:
+                        board.addRandomValue()
+                if event.key == pygame.K_d:
+                    change = board.moveRight()
+                    if change: 
+                        board.addRandomValue()
+                if event.key == pygame.K_s:
+                    change = board.moveDown()
+                    if change:
+                        board.addRandomValue()
+                if event.key == pygame.K_a:
+                    change = board.moveLeft()
+                    if change:
+                        board.addRandomValue()
 
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("purple")
 
         # RENDER YOUR GAME HERE
+        if change == True:
+            change = False
+            print(board)
+            print()
 
 
         # flip() the display to put your work on screen
         pygame.display.flip()
 
         clock.tick(60)  # limits FPS to 60
-    '''
+
         
 
-    # pygame.quit()
+    pygame.quit()
     return
 
 if __name__ == "__main__":

@@ -119,7 +119,7 @@ class Board:
                         # set last_num to 0 to prevent matching multiple
                         last_num = 0
                         self.mBoard[i][collumns] = 0
-                        changed == True
+                        changed = True
         return changed
 
     def moveLeft(self):
@@ -154,6 +154,7 @@ class Board:
                         if row[i] != 0:
                             pivot += 1
                             last_num = row[i]
+                            
                         
 
                     # if it is not zero, but does not match the last number
@@ -168,7 +169,7 @@ class Board:
                             self.mBoard[rows][i] = 0
                             last_num = row[i]
                             pivot += 1
-                            changed == True
+                            changed = True
 
                     # if not zero and matches last number, meaning it needs to combine
                     else:
@@ -178,7 +179,7 @@ class Board:
                         #set last_num to 0 to prevent matching multiple
                         last_num = 0
                         self.mBoard[rows][i] = 0
-                        changed == True
+                        changed = True
         return changed
 
 
@@ -244,8 +245,66 @@ class Board:
         return changed
 
 
-    #def moveRight(self):
+    def moveRight(self):
+        '''
+        method for moving tiles down. returns True if changed, False if no change
+        '''
+        changed = False
+        for rows in range(self.mHeight):
+            row = []
+            has_num = False
+            for collumns in range(self.mHeight):
+                # get all values for collumn
+                row.append(self.mBoard[rows][collumns])
+                if self.mBoard[rows][collumns] != 0:
+                    has_num = True
 
+            #if only found 0's, skip to next
+            if has_num == False:
+                continue
+            else:
+                pivot = self.mHeight - 1
+                last_num = 0
+                row.reverse()
+
+                # loop through the collumn list and move any if needed
+                for i in range(len(row)):
+                    offset = self.mWidth - i - 1
+                    
+                        
+                    # if first number is 0 or if it is the first number in the collumn, skip
+                    if row[i] == 0 or i == 0:
+
+                        # if number is not 0, decrease pivot
+                        if row[i] != 0:
+                            pivot -= 1
+                            last_num = row[i]
+                        continue
+
+                    # if it is not zero, but does not match the last number
+                    elif row[i] != last_num:
+                        if offset == pivot:
+                            last_num = row[i]
+                            pivot -= 1
+
+                        else:
+                            self.mBoard[rows][pivot] = row[i]
+                            self.mBoard[rows][offset] = 0
+                            last_num = row[i]
+                            pivot -= 1
+                            changed = True
+
+                    # if not zero and matches last number, meaning it needs to combine
+                    else:
+                        # multiply last number by 2
+                        self.mBoard[rows][pivot + 1] = last_num * 2
+
+                        # set last_num to 0 to prevent matching multiple
+                        last_num = 0
+                        self.mBoard[rows][offset] = 0
+                        changed = True
+
+        return changed
 
                         
 

@@ -15,6 +15,12 @@ class Board:
             lines.append(line)
         return "\n".join (lines)
     
+    def getWidth(self):
+        return self.mWidth
+    
+    def getHeight(self):
+        return self.mHeight
+    
 
     def setValue(self, row, collumn, val):
         '''

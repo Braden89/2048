@@ -10,8 +10,19 @@ def startup():
     print()
     return board
 
-def createBackground():
-    pass
+def createBackground(board: Board):
+    width = 720
+    height = 720
+    background = pygame.Surface(width, height)
+    distance = width / 4
+
+    for col in range(3):
+        rect = pygame.Rect(distance - 5, 0, 10, height)
+        pygame.draw.rect(background, (0,0,0), )
+
+
+
+
 
 
 def render(board):

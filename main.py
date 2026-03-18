@@ -66,6 +66,10 @@ def main():
                     if change:
                         board.addRandomValue()
 
+        if board.isGameOver():
+            print("Game Over!")
+            running = False
+
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("purple")
 

@@ -312,6 +312,32 @@ class Board:
 
         return changed
 
+    def isGameOver(self):
+        '''
+        Checks if the game is over (no more legal moves).
+        Returns True if game is over, False otherwise.
+        '''
+        # Make a copy of the board to avoid modifying it
+        original = [row[:] for row in self.mBoard]
+        
+        # Try each move; if any move changes the board, game is not over
+        if self.moveUp():
+            self.mBoard = original
+            return False
+        if self.moveLeft():
+            self.mBoard = original
+            return False
+        if self.moveDown():
+            self.mBoard = original
+            return False
+        if self.moveRight():
+            self.mBoard = original
+            return False
+        
+        # Restore the board and return True (game over)
+        self.mBoard = original
+        return True
+
                         
 
             

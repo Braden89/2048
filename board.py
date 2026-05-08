@@ -63,7 +63,8 @@ class Board:
             return -1
         else: 
             chosen_i, chosen_j = random.choice(possible_tiles)
-            new_num = random.choice([2, 4])
+            # Standard 2048 spawns a 2 most of the time and a 4 occasionally.
+            new_num = 4 if random.random() < 0.1 else 2
             self.mBoard[chosen_i][chosen_j] = new_num
 
             return 0

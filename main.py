@@ -6,6 +6,7 @@ from board import *
 def startup():
     board = Board()
     board.addRandomValue()
+    board.addRandomValue()
     print(board)
     print()
     return board
